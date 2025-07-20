@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gradient-to-br from-federal_blue via-marian_blue to-federal_blue text-white font-sans min-h-screen;
+  background-attachment: fixed;
+}
+
+@layer utilities {
+  .animate-gradient-x {
+    animation: gradient-x 6s ease-in-out infinite;
+  }
+  @keyframes gradient-x {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+}
+
+.glass {
+  background: rgba(38, 64, 139, 0.18); /* marian_blue with opacity */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.heading-auburn {
+  @apply text-auburn-500;
+} 
