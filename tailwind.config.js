@@ -27,6 +27,9 @@ module.exports = {
           DEFAULT: '#C93932',
         },
       },
+      fontFamily: {
+        jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+      },
     },
   },
   plugins: [],
