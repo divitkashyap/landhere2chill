@@ -6,13 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2, CheckCircle2, Mail } from "lucide-react";
-import { GlareCard } from "../ui/glare-card";
-import { PlaceholdersAndVanishInput } from "../ui/placeholders-and-vanish-input";
+import { toast } from "sonner";
 
-const schema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-});
-
+const schema = z.object({ email: z.string().email({ message: "Please enter a valid email address" }) });
 type FormData = z.infer<typeof schema>;
 
 interface EmailCaptureFormProps {
@@ -22,60 +18,67 @@ interface EmailCaptureFormProps {
 export default function EmailCaptureForm({ cta = "Join Waitlist" }: EmailCaptureFormProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const [inputValue, setInputValue] = useState("");
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: FormData) => {
     setStatus("loading");
     setError(null);
     try {
-      // --- API Integration Point ---
-      // 1. Send POST to /api/waitlist with { email: data.email }
-      // 2. Integrate with Resend or Supabase here
-      // Example:
-      // await fetch("/api/waitlist", { method: "POST", body: JSON.stringify({ email: data.email }) });
-      await new Promise((res) => setTimeout(res, 1200)); // Simulate network
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email }),
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        setStatus("error");
+        setError(result.error || "Something went wrong. Please try again.");
+        toast.error(result.error || "Something went wrong. Please try again.");
+        return;
+      }
       setStatus("success");
+      toast.success("You're on the waitlist! Check your email for confirmation.");
       reset();
     } catch (e) {
       setStatus("error");
-      setError("Something went wrong. Please try again.");
-    }
-  };
-
-  const handleVanishSubmit = () => {
-    // Only submit if not loading and value is valid
-    if (status !== "loading" && inputValue) {
-      handleSubmit(onSubmit)();
+      setError("Server error. Please try again later.");
+      toast.error("Server error. Please try again later.");
     }
   };
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="w-full max-w-2xl">
-        <PlaceholdersAndVanishInput
-          placeholders={["Enter your email", "you@company.com", "Get notified instantly!"]}
-          value={inputValue}
-          setValue={setInputValue}
-          onVanishSubmit={handleVanishSubmit}
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-xl mx-auto flex flex-col items-center gap-3">
+      <div className="w-full flex flex-col sm:flex-row items-center gap-3">
+        <input
+          type="email"
+          autoComplete="email"
+          placeholder="Enter your email"
+          {...register("email")}
           disabled={status === "loading" || status === "success"}
+          className="flex-1 rounded-full px-5 py-3 bg-[#23272f] text-white placeholder:text-white/60 border border-yellow-400 focus:border-persian_red focus:ring-2 focus:ring-persian_red outline-none transition-all duration-200 font-jakarta text-base shadow-md disabled:opacity-60"
         />
-      </div>
-      {/* Toast notifications can be added here for better UX */}
-      {status === "error" && (
-        <motion.span
-          className="text-accent-orange text-sm mt-2 md:mt-0 md:ml-2"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
+        <button
+          type="submit"
+          disabled={status === "loading" || status === "success"}
+          className="mt-2 sm:mt-0 inline-flex items-center justify-center rounded-full px-6 py-3 bg-gradient-to-r from-persian_red to-yellow-400 text-white font-bold text-base shadow-lg hover:scale-105 hover:from-yellow-400 hover:to-persian_red transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:opacity-60"
         >
-          {error}
-        </motion.span>
+          {status === "loading" ? (
+            <Loader2 className="animate-spin mr-2" size={20} />
+          ) : (
+            <Mail className="mr-2" size={20} />
+          )}
+          {cta}
+        </button>
+      </div>
+      {errors.email && (
+        <span className="text-red-400 text-sm font-medium mt-1">{errors.email.message}</span>
       )}
-    </div>
+      {status === "error" && error && (
+        <span className="text-red-400 text-sm font-medium mt-1">{error}</span>
+      )}
+      {status === "success" && (
+        <span className="text-green-400 text-sm font-medium mt-1 flex items-center gap-1"><CheckCircle2 size={18} /> You're on the waitlist!</span>
+      )}
+    </form>
   );
 } 
