@@ -38,7 +38,7 @@ export default function EmailCaptureForm({ cta = "Join Waitlist" }: EmailCapture
       setStatus("success");
       toast.success("You&apos;re on the waitlist! Check your email for confirmation.");
       reset();
-    } catch (e) {
+    } catch {
       setStatus("error");
       setError("Server error. Please try again later.");
       toast.error("Server error. Please try again later.");
