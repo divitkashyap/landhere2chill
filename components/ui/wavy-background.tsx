@@ -32,8 +32,8 @@ export const WavyBackground = ({
     nt: number,
     i: number,
     x: number,
-    ctx: any,
-    canvas: any;
+    ctx: CanvasRenderingContext2D | null,
+    canvas: HTMLCanvasElement | null;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const getSpeed = () => {
     switch (speed) {
@@ -48,12 +48,14 @@ export const WavyBackground = ({
 
   const init = () => {
     canvas = canvasRef.current;
-    ctx = canvas.getContext("2d");
+    ctx = canvas ? canvas.getContext("2d") : null;
+    if (!ctx || !canvas) return;
     w = ctx.canvas.width = window.innerWidth;
     h = ctx.canvas.height = window.innerHeight;
     ctx.filter = `blur(${blur}px)`;
     nt = 0;
     window.onresize = function () {
+      if (!ctx || !canvas) return;
       w = ctx.canvas.width = window.innerWidth;
       h = ctx.canvas.height = window.innerHeight;
       ctx.filter = `blur(${blur}px)`;
@@ -69,13 +71,14 @@ export const WavyBackground = ({
     "#22d3ee",
   ];
   const drawWave = (n: number) => {
+    if (!ctx) return;
     nt += getSpeed();
     for (i = 0; i < n; i++) {
       ctx.beginPath();
       ctx.lineWidth = waveWidth || 50;
       ctx.strokeStyle = waveColors[i % waveColors.length];
-      for (x = 0; x < w; x += 5) {
-        var y = noise(x / 800, 0.3 * i, nt) * 100;
+      for (let x = 0; x < w; x += 5) {
+        let y = noise(x / 800, 0.3 * i, nt) * 100;
         ctx.lineTo(x, y + h * 0.5); // adjust for height, currently at 50% of the container
       }
       ctx.stroke();
@@ -85,6 +88,7 @@ export const WavyBackground = ({
 
   let animationId: number;
   const render = () => {
+    if (!ctx) return;
     ctx.fillStyle = backgroundFill || "black";
     ctx.globalAlpha = waveOpacity || 0.5;
     ctx.fillRect(0, 0, w, h);
@@ -113,7 +117,7 @@ export const WavyBackground = ({
     <div
       className={cn(
         "h-screen flex flex-col items-center justify-center",
-        containerClassName
+        containerClassName || ""
       )}
     >
       <canvas
@@ -124,7 +128,7 @@ export const WavyBackground = ({
           ...(isSafari ? { filter: `blur(${blur}px)` } : {}),
         }}
       ></canvas>
-      <div className={cn("relative z-10", className)} {...props}>
+      <div className={cn("relative z-10", className || "")} {...props}>
         {children}
       </div>
     </div>

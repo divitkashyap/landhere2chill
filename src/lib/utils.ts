@@ -1,1 +1,1 @@
-export function cn(...classes: any[]) { return classes.filter(Boolean).join(' '); }
+export function cn(...classes: string[]) { return classes.filter(Boolean).join(' '); }

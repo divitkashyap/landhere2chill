@@ -57,7 +57,7 @@ export default function FeaturesSection() {
         whileInView="show"
         viewport={{ once: true }}
       >
-        {features.map((feature, i) => (
+        {features.map((feature) => (
           <motion.div
             key={feature.title}
             variants={card}

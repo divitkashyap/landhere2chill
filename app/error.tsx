@@ -5,10 +5,8 @@ import { useEffect } from "react";
 export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
     // Log error details to the console for debugging
-    // eslint-disable-next-line no-console
     console.error("GlobalError: ", error);
     if (error?.stack) {
-      // eslint-disable-next-line no-console
       console.error("Stack trace:", error.stack);
     }
   }, [error]);

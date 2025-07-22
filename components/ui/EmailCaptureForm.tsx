@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Loader2, CheckCircle2, Mail } from "lucide-react";
 import { toast } from "sonner";
 
@@ -37,7 +36,7 @@ export default function EmailCaptureForm({ cta = "Join Waitlist" }: EmailCapture
         return;
       }
       setStatus("success");
-      toast.success("You're on the waitlist! Check your email for confirmation.");
+      toast.success("You&apos;re on the waitlist! Check your email for confirmation.");
       reset();
     } catch (e) {
       setStatus("error");
@@ -77,7 +76,7 @@ export default function EmailCaptureForm({ cta = "Join Waitlist" }: EmailCapture
         <span className="text-red-400 text-sm font-medium mt-1">{error}</span>
       )}
       {status === "success" && (
-        <span className="text-green-400 text-sm font-medium mt-1 flex items-center gap-1"><CheckCircle2 size={18} /> You're on the waitlist!</span>
+        <span className="text-green-400 text-sm font-medium mt-1 flex items-center gap-1"><CheckCircle2 size={18} /> You&apos;re on the waitlist!</span>
       )}
     </form>
   );

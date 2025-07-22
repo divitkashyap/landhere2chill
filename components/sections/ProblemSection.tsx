@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { AlertTriangle, TrendingDown, Users } from "lucide-react";
-import { TextRevealCard, TextRevealCardTitle, TextRevealCardDescription } from "../ui/text-reveal-card";
+import { TextRevealCard, TextRevealCardTitle } from "../ui/text-reveal-card";
 
 const painPoints = [
   {
@@ -33,7 +33,7 @@ export default function ProblemSection() {
         >
           <span className="text-yellow-400 font-semibold uppercase tracking-wide text-xs mb-2 block">Hover to find out</span>
           <TextRevealCardTitle className="font-bold text-xl sm:text-2xl font-jakarta leading-snug mb-2">
-            Can you guess how much businesses lose every minute they're down?
+            Can you guess how much businesses lose every minute they&apos;re down?
           </TextRevealCardTitle>
         </TextRevealCard>
         <motion.p
@@ -43,7 +43,7 @@ export default function ProblemSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          The real cost of downtime is more than just lost revenue. It's lost trust, lost customers, and lost opportunities.
+          The real cost of downtime is more than just lost revenue. It&apos;s lost trust, lost customers, and lost opportunities.
         </motion.p>
       </div>
       <div className="flex flex-col md:flex-row gap-8 justify-center items-center">

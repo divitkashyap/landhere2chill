@@ -22,9 +22,9 @@ A modern, high-converting pre-launch landing page for an uptime monitoring and s
    npm install
    ```
 2. Run the development server:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 3. Open [http://localhost:3000](http://localhost:3000)
 
 ## API Integration

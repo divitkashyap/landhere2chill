@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
     if (!result.success) {
       return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
     }
-    const { email } = result.data;
 
     // --- API Integration Point ---
     // 1. Send email to Resend API (https://resend.com/docs/api-reference/emails/send-email)
@@ -24,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     // Simulate success
     return NextResponse.json({ success: true });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "Server error. Please try again later." }, { status: 500 });
   }
 } 
