@@ -27,7 +27,7 @@ export default function SocialProofSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        Join 1,000+ developers already on the waitlist
+        Join the waitlist to get early access
       </motion.h2>
       <div className="flex flex-col md:flex-row gap-8 justify-center items-center mb-12">
         {testimonials.map((t, i) => (

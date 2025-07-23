@@ -11,7 +11,7 @@ export default function PricingPreview() {
         transition={{ duration: 0.6 }}
       >
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-persian_red drop-shadow-md">
-          Plans starting at <span className="text-white">$19/month</span>
+          Plans starting at <span className="text-white">$9/month</span>
         </h2>
         <p className="text-lg text-white mb-2">
           Free tier available at launch
